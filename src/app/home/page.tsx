@@ -13,6 +13,7 @@ import {
   endOfWeek
 } from 'date-fns'
 import { ru } from 'date-fns/locale'
+import { Link } from 'react-router-dom'
 
 const DiaryEntry = ({
   date,
@@ -73,11 +74,20 @@ const [showEditModal, setShowEditModal] = useState(false)
 const [dateToDelete, setDateToDelete] = useState<string | null>(null)
 const [showEditConfirmationModal, setShowEditConfirmationModal] = useState(false)
 const [editPendingNote, setEditPendingNote] = useState<{ date: string, note: string } | null>(null)
+const [showAboutModal, setShowAboutModal] = useState(false)
 
   const userNotes = currentUser ? (allNotes[currentUser.email] || {}) : {}
 
   const handleLogout = () => {
     navigate('/login')
+  }
+
+  const handleShowAbout = () => {
+    setShowAboutModal(true)
+  }
+
+  const handleCloseAbout = () => {
+    setShowAboutModal(false)
   }
 
   const handlePreviousMonth = () => {
@@ -220,19 +230,20 @@ const [editPendingNote, setEditPendingNote] = useState<{ date: string, note: str
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50">
-      <nav className="bg-white shadow-sm">
-        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="flex justify-between items-center h-16">
-            <div className="flex items-center">
-              <h1 className="text-xl font-semibold text-indigo-900">✨ Мой Дневник</h1>
-            </div>
-            <div className="flex items-center space-x-4">
-              <span className="text-gray-600">{currentUser?.email}</span>
-              <button onClick={handleLogout} className="px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 focus:outline-none">Выйти</button>
-            </div>
+    <nav className="bg-white shadow-sm">
+      <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between items-center h-16">
+          <div className="flex items-center">
+            <h1 className="text-xl font-semibold text-indigo-900">✨ Мой Дневник</h1>
+          </div>
+          <div className="flex items-center space-x-4">
+          <span className="text-gray-600">{currentUser?.email}</span>
+          <button onClick={handleShowAbout} className="px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 focus:outline-none">О приложении</button>
+            <button onClick={handleLogout} className="px-4 py-2 text-sm font-medium text-indigo-600 hover:text-indigo-700 focus:outline-none">Выйти</button>
           </div>
         </div>
-      </nav>
+      </div>
+    </nav>
 
       <div className="max-w-5xl mx-auto p-8">
         <div className="flex justify-between items-center mb-8">
@@ -296,6 +307,20 @@ const [editPendingNote, setEditPendingNote] = useState<{ date: string, note: str
             </div>
           </div>
         )}
+
+{showAboutModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+          <div className="bg-white p-6 md:p-8 rounded-2xl w-full max-w-[32rem] shadow-2xl transform transition-all max-h-[90vh] flex flex-col">
+            <h2 className="text-2xl font-bold mb-6 text-indigo-900">✨ О приложении</h2>
+            <p className="text-gray-600 mb-6">
+              Это приложение представляет собой дневник, который позволяет пользователю записывать свои мысли на каждый день. Вы можете организовывать свои планы и мысли с помощью календаря и заметок. Приятного использования!
+            </p>
+            <div className="flex justify-end gap-3">
+              <button onClick={handleCloseAbout} className="px-4 md:px-6 py-3 text-gray-600 hover:bg-gray-100 rounded-xl transition-colors duration-200 font-medium">Закрыть</button>
+            </div>
+          </div>
+        </div>
+      )}
 
         {showConfirmationModal && (
           <div className="fixed inset-0 bg-black bg-opacity-40 backdrop-blur-sm flex items-center justify-center z-50 p-4">
