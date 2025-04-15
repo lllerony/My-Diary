@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "type": "module",
-  "homepage": "https://YOUR_GITHUB_USERNAME.github.io/diary-app",
+  "homepage": "https://lllerony.github.io/diary-app",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
